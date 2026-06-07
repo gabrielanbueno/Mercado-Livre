@@ -11,19 +11,21 @@ service = Service(
     ChromeDriverManager().install()
 )
 
-driver = webdriver.Chrome(
-    service=service
-)
-
-driver.get("https://web.whatsapp.com")
-
-input("Faça login e pressione ENTER")
-
-grupo = input("Digite o nome da conversa: ")
+driver = webdriver.Chrome(service=service)
 
 try:
 
-    campo_pesquisa = WebDriverWait(driver, 20).until(
+    driver.get("https://web.whatsapp.com")
+
+    input(
+        "\nFaça login no WhatsApp Web e pressione ENTER..."
+    )
+
+    grupo = input(
+        "\nDigite o nome EXATO da conversa: "
+    )
+
+    pesquisa = WebDriverWait(driver, 20).until(
         EC.presence_of_element_located(
             (
                 By.XPATH,
@@ -32,25 +34,42 @@ try:
         )
     )
 
-    campo_pesquisa.click()
+    pesquisa.click()
 
-    campo_pesquisa.send_keys(grupo)
+    pesquisa.send_keys(grupo)
 
     time.sleep(3)
 
-    campo_pesquisa.send_keys(Keys.ENTER)
+    pesquisa.send_keys(Keys.ENTER)
 
-    print("Conversa selecionada!")
+    print("Conversa aberta!")
 
-    input(
-        "A conversa abriu? Se sim, pressione ENTER"
+    time.sleep(3)
+
+    caixa = WebDriverWait(driver, 20).until(
+        EC.presence_of_element_located(
+            (
+                By.XPATH,
+                "//*[@data-testid='conversation-compose-box-input']"
+            )
+        )
     )
+
+    caixa.click()
+
+    caixa.send_keys("TESTE AUTOMATICO")
+
+    time.sleep(1)
+
+    caixa.send_keys(Keys.ENTER)
+
+    print("Mensagem enviada!")
 
 except Exception as erro:
 
     print("ERRO:")
     print(erro)
 
-input("ENTER para fechar")
+input("\nPressione ENTER para fechar")
 
 driver.quit()

@@ -1,0 +1,44 @@
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+import time
+
+service = Service(
+    ChromeDriverManager().install()
+)
+
+driver = webdriver.Chrome(service=service)
+
+driver.get("SEU_LINK_DE_AFILIADA")
+
+time.sleep(10)
+
+titulo = driver.find_element(
+    By.CLASS_NAME,
+    "ui-pdp-title"
+)
+
+preco_inteiro = driver.find_element(
+    By.CLASS_NAME,
+    "andes-money-amount__fraction"
+)
+
+centavos = driver.find_element(
+    By.CLASS_NAME,
+    "andes-money-amount__cents"
+)
+
+preco = f"R$ {preco_inteiro.text},{centavos.text}"
+
+produto = {
+    "titulo": titulo.text,
+    "preco": preco,
+    "link": driver.current_url
+}
+
+print(produto)
+
+input("ENTER para fechar")
+
+driver.quit()
