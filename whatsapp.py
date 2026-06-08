@@ -3,10 +3,12 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 
 
-def enviar_whatsapp(grupo, mensagem):
+def enviar_mensagem(conversa, mensagem):
 
     service = Service(
         ChromeDriverManager().install()
@@ -16,40 +18,58 @@ def enviar_whatsapp(grupo, mensagem):
         service=service
     )
 
-    driver.get(
-        "https://web.whatsapp.com"
-    )
+    try:
 
-    input(
-        "Faça login no WhatsApp Web e pressione ENTER"
-    )
+        driver.get(
+            "https://web.whatsapp.com"
+        )
 
-    pesquisa = driver.find_element(
-        By.XPATH,
-        '//div[@contenteditable="true"]'
-    )
+        input(
+            "\nFaça login no WhatsApp e pressione ENTER..."
+        )
 
-    pesquisa.send_keys(grupo)
+        pesquisa = WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located(
+                (
+                    By.XPATH,
+                    "//input[@aria-label='Pesquisar ou começar uma nova conversa']"
+                )
+            )
+        )
 
-    time.sleep(3)
+        pesquisa.click()
 
-    pesquisa.send_keys(Keys.ENTER)
+        pesquisa.send_keys(conversa)
 
-    time.sleep(2)
+        time.sleep(3)
 
-    campos = driver.find_elements(
-        By.XPATH,
-        '//div[@contenteditable="true"]'
-    )
+        pesquisa.send_keys(Keys.ENTER)
 
-    caixa = campos[-1]
+        time.sleep(3)
 
-    caixa.send_keys(mensagem)
+        caixa = WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located(
+                (
+                    By.XPATH,
+                    "//*[@data-testid='conversation-compose-box-input']"
+                )
+            )
+        )
 
-    caixa.send_keys(Keys.ENTER)
+        caixa.click()
 
-    input(
-        "Mensagem enviada. ENTER para fechar."
-    )
+        caixa.send_keys(mensagem)
 
-    driver.quit()
+        time.sleep(1)
+
+        caixa.send_keys(Keys.ENTER)
+
+        print("Mensagem enviada!")
+
+        input(
+            "\nPressione ENTER para fechar..."
+        )
+
+    finally:
+
+        driver.quit()

@@ -4,41 +4,48 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 import time
 
-service = Service(
-    ChromeDriverManager().install()
-)
 
-driver = webdriver.Chrome(service=service)
+def obter_produto(link):
 
-driver.get("https://meli.la/2MESiP7")
+    service = Service(
+        ChromeDriverManager().install()
+    )
 
-time.sleep(10)
+    driver = webdriver.Chrome(
+        service=service
+    )
 
-titulo = driver.find_element(
-    By.CLASS_NAME,
-    "ui-pdp-title"
-)
+    try:
 
-preco_inteiro = driver.find_element(
-    By.CLASS_NAME,
-    "andes-money-amount__fraction"
-)
+        driver.get(link)
 
-centavos = driver.find_element(
-    By.CLASS_NAME,
-    "andes-money-amount__cents"
-)
+        time.sleep(8)
 
-preco = f"R$ {preco_inteiro.text},{centavos.text}"
+        titulo = driver.find_element(
+            By.CLASS_NAME,
+            "ui-pdp-title"
+        )
 
-produto = {
-    "titulo": titulo.text,
-    "preco": preco,
-    "link": driver.current_url
-}
+        preco_inteiro = driver.find_element(
+            By.CLASS_NAME,
+            "andes-money-amount__fraction"
+        )
 
-print(produto)
+        centavos = driver.find_element(
+            By.CLASS_NAME,
+            "andes-money-amount__cents"
+        )
 
-input("ENTER para fechar")
+        preco = f"R$ {preco_inteiro.text},{centavos.text}"
 
-driver.quit()
+        produto = {
+            "titulo": titulo.text,
+            "preco": preco,
+            "link": driver.current_url
+        }
+
+        return produto
+
+    finally:
+
+        driver.quit()

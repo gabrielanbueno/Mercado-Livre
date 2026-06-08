@@ -1,0 +1,29 @@
+from mercado_livre import obter_produto
+from whatsapp import enviar_mensagem
+from config import LINK_AFILIADO
+from config import CONVERSA_WHATSAPP
+
+produto = obter_produto(
+    LINK_AFILIADO
+)
+
+mensagem = f"""
+OFERTA ENCONTRADA
+
+PRODUTO:
+{produto['titulo']}
+
+PRECO:
+{produto['preco']}
+
+LINK:
+{produto['link']}
+"""
+
+print("\nMensagem gerada:\n")
+print(mensagem)
+
+enviar_mensagem(
+    CONVERSA_WHATSAPP,
+    mensagem
+)
