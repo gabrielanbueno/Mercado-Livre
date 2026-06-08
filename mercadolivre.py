@@ -10,7 +10,7 @@ service = Service(
 
 driver = webdriver.Chrome(service=service)
 
-driver.get("SEU_LINK_DE_AFILIADA")
+driver.get("https://meli.la/2MESiP7")
 
 time.sleep(10)
 
