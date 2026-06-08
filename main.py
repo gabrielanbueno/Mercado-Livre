@@ -1,4 +1,4 @@
-from mercado_livre import obter_produto
+from mercadolivre import obter_produto
 from whatsapp import enviar_mensagem
 from config import LINK_AFILIADO
 from config import CONVERSA_WHATSAPP
