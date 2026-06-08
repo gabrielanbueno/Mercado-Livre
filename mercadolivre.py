@@ -19,7 +19,10 @@ def obter_produto(link):
 
         driver.get(link)
 
-        time.sleep(8)
+        time.sleep(5000)
+        
+        print(driver.current_url)
+        print(driver.title)
 
         titulo = driver.find_element(
             By.CLASS_NAME,
@@ -49,3 +52,11 @@ def obter_produto(link):
     finally:
 
         driver.quit()
+if __name__ == "__main__":
+
+    produto = obter_produto(
+        "https://meli.la/1D6Asbi"
+    )
+
+    print("produto encontrado:")        
+    print(produto)        

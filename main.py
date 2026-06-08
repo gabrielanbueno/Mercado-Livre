@@ -4,7 +4,7 @@ from config import LINK_AFILIADO
 from config import CONVERSA_WHATSAPP
 
 produto = obter_produto(
-    LINK_AFILIADO
+    "https://meli.la/1D6Asbi"
 )
 
 mensagem = f"""
